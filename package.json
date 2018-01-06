@@ -1,0 +1,29 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "Language Interpretation and Recognition Interface (LIRI) Bot ",
+  "main": "index.js",
+  "scripts": {
+    "test": "test this"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ruha-RP/liri-node-app.git"
+  },
+  "keywords": [
+    "liri",
+    "node"
+  ],
+  "author": "Ruha Peera",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ruha-RP/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/Ruha-RP/liri-node-app#readme",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "node-spotify-api": "^1.0.7",
+    "request": "^2.83.0",
+    "twitter": "^1.7.1"
+  }
+}
