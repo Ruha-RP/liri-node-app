@@ -30,32 +30,60 @@ switch (action) {
 };
 
 //function for obtaining latest tweets
-function tweets() {
+// function tweets() {
 
-	//using the twitter API
-	var Twitter = require("twitter");
+// 	//using the twitter API
+// 	var Twitter = require("twitter");
 
-	var client = new Twitter({
+
+// 	//need to fix this...
+// 	var client = new Twitter({
+
+// 	});
+
+// 	var params = {screen_name: 'SophyDaphne'};
+
+// 	client.get('statuses/user_timeline', params, function(error, tweets, response) {
 	  
-	});
-
-	var params = {screen_name: 'SophyDaphne'};
-
-	client.get('statuses/user_timeline', params, function(error, tweets, response) {
-	  
-		if (!error) {
+// 		if (!error) {
 	    	
-	    	for (var i = 0; i < tweets.length; i++) {
+// 	    	for (var i = 0; i < tweets.length; i++) {
 
-	    		console.log(tweets[i].text);
-	    		console.log(tweets[i].created_at);
-	    		console.log("");
+// 	    		console.log(tweets[i].text);
+// 	    		console.log(tweets[i].created_at);
+// 	    		console.log("");
 
-	    	}
-	  	}
+// 	    	}
+// 	  	}
+// 	});
+
+// };
+
+//function for obatining song from spotify
+function song() {
+
+	var Spotify = require("node-spotify-api");
+ 
+	
+ 
+	
+	spotify.search({ type: 'track', query: "Hello", limit:1 }, function(err, data) {
+		
+		if (err) {
+    		
+    		return console.log('Error occurred: ' + err);
+  		}
+
+		// console.log(data); 
+		console.log("Song name: " + data.tracks.items[0].name);
+		console.log("Preview link: " + data.tracks.items[0].external_urls.spotify);
+		console.log("Album: " + data.tracks.items[0].album.name);
+		console.log("Artist(s): " + data.tracks.items[0].artists[0].name);
+
 	});
 
 };
+
 
 
 //function for obtaining movie from OMDB
