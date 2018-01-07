@@ -96,8 +96,8 @@ function song() {
 
 	 
 
-	//utilizing the spotify package
-	spotify.search({ type: 'track', query: input, limit:1 }, function(err, data) {
+	//utilizing the spotify package, limits search to 3 results
+	spotify.search({ type: 'track', query: input, limit:3 }, function(err, data) {
 		
 		if (err) {
     		
@@ -105,10 +105,25 @@ function song() {
   		}
 
 		// console.log(data); 
-		console.log("Song name: " + data.tracks.items[0].name);
-		console.log("Preview link: " + data.tracks.items[0].external_urls.spotify);
-		console.log("Album: " + data.tracks.items[0].album.name);
-		console.log("Artist(s): " + data.tracks.items[0].artists[0].name);
+
+		//creating a for loop to loop through the array:
+		for (var i = 0; i < data.tracks.items.length; i++) {
+
+			// console.log(data.tracks.items[i]);
+			console.log("Song name: " + data.tracks.items[i].name);
+			console.log("Preview link: " + data.tracks.items[i].external_urls.spotify);
+			console.log("Album: " + data.tracks.items[i].album.name);
+			// console.log("Artist(s): " + data.tracks.items[i].artists[0].name);//This displayed only one artist
+
+			for (var j = 0; j < data.tracks.items[i].artists.length; j++ ) {
+
+				console.log("Artist(s): " + data.tracks.items[i].artists[j].name);
+
+			}
+
+			console.log("");
+
+		}
 
 	});
 
