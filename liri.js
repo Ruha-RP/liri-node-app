@@ -39,21 +39,32 @@ function movie() {
 	//assigning the input varibale to be empty
 	input = "";
 
-	//creating a for loop to capture multiple words in the movie name and assigning it to the input
-	for (var i = 3; i < nodeArgs.length; i++) {
+	//setting the default movie-this value
+	if (nodeArgs.length <= 3) {
 
-		if (i > 3 && i < nodeArgs.length) {
+		input = "mr+nobody";
+	}
 
-			input = input + "+" + nodeArgs[i];
-		}
+	else {
 
-		else {
+		//creating a for loop to capture multiple words in the movie name and assigning it to the input
+		for (var i = 3; i < nodeArgs.length; i++) {
 
-			input += nodeArgs[i];
-		}
+			if (i > 3 && i < nodeArgs.length) {
+
+				input = input + "+" + nodeArgs[i];
+			}
+
+			else {
+
+				input += nodeArgs[i];
+			};
+		
+		};
 	};
+	
 
-
+	//utilizing request
 	request("http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
 
 		if (!error && response.statusCode === 200) {
