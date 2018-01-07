@@ -71,21 +71,32 @@ function song() {
 	//allows multiple words in the input
 	input = "";
 
-	for (var i = 3; i < nodeArgs.length; i++) {
+	if (nodeArgs.length <= 3) {
 
-		if (i > 3 && i < nodeArgs.length) {
+		input = "ace of base";
+	}
 
-			input = input + "+" + nodeArgs[i];
-		}
+	else {
 
-		else {
+		for (var i = 3; i < nodeArgs.length; i++) {
 
-			input += nodeArgs[i];
+			if (i > 3 && i < nodeArgs.length) {
+
+				input = input + "+" + nodeArgs[i];
+			}
+
+			else {
+
+				input += nodeArgs[i];
+			};
+	
 		};
-	
-	}; 
 
-	
+	}
+
+	 
+
+	//utilizing the spotify package
 	spotify.search({ type: 'track', query: input, limit:1 }, function(err, data) {
 		
 		if (err) {
