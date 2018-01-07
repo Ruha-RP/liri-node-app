@@ -29,6 +29,34 @@ switch (action) {
 		break;
 };
 
+//function for obtaining latest tweets
+function tweets() {
+
+	//using the twitter API
+	var Twitter = require("twitter");
+
+	var client = new Twitter({
+	  
+	});
+
+	var params = {screen_name: 'SophyDaphne'};
+
+	client.get('statuses/user_timeline', params, function(error, tweets, response) {
+	  
+		if (!error) {
+	    	
+	    	for (var i = 0; i < tweets.length; i++) {
+
+	    		console.log(tweets[i].text);
+	    		console.log(tweets[i].created_at);
+	    		console.log("");
+
+	    	}
+	  	}
+	});
+
+};
+
 
 //function for obtaining movie from OMDB
 function movie() {
@@ -64,7 +92,7 @@ function movie() {
 	};
 	
 
-	//utilizing request
+	//utilizing request to access API and display output
 	request("http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
 
 		if (!error && response.statusCode === 200) {
