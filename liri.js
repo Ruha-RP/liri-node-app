@@ -64,10 +64,29 @@ function song() {
 
 	var Spotify = require("node-spotify-api");
  
+	var spotify = new Spotify({
+		
+	});
+
+	//allows multiple words in the input
+	input = "";
+
+	for (var i = 3; i < nodeArgs.length; i++) {
+
+		if (i > 3 && i < nodeArgs.length) {
+
+			input = input + "+" + nodeArgs[i];
+		}
+
+		else {
+
+			input += nodeArgs[i];
+		};
 	
- 
+	}; 
+
 	
-	spotify.search({ type: 'track', query: "Hello", limit:1 }, function(err, data) {
+	spotify.search({ type: 'track', query: input, limit:1 }, function(err, data) {
 		
 		if (err) {
     		
