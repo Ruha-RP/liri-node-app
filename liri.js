@@ -1,6 +1,10 @@
 require("dotenv").config();
 
-var keysFile = require("./keys.js");
+console.log(" \n Hi, I'm Liri! What do you want to do today? \n Choose from the following: 'my-tweets', 'movie-this', 'spotify-this-song' or 'do-what-it-says'");
+
+//======================================VARIABLES=====================================================
+
+var keys = require("./keys.js");
 
 // var spotify = new Spotify(keys.spotify);
 // var client = new Twitter(keys.twitter);
@@ -9,6 +13,8 @@ var keysFile = require("./keys.js");
 var action = process.argv[2];
 var input = process.argv[3];
 var nodeArgs = process.argv;
+
+console.log("Command chosen: " + action);
 
 //Switch-case statement for different commands
 switch (action) {
@@ -29,52 +35,55 @@ switch (action) {
 		break;
 };
 
-//function for obtaining latest tweets
-// function tweets() {
 
-// 	//using the twitter API
-// 	var Twitter = require("twitter");
+//=====================================COMMAND FUNCTIONS====================================================
+
+//==============TWITTER=======================
+
+// function for obtaining latest tweets
+function tweets() {
+
+	//using the twitter API
+	var Twitter = require("twitter");
 
 
-// 	//need to fix this...
-// 	var client = new Twitter({
+	//need to fix this...
+	var client = new Twitter(
 
-// 	});
+		keys.twitter
 
-// 	var params = {screen_name: 'SophyDaphne'};
+	);
 
-// 	client.get('statuses/user_timeline', params, function(error, tweets, response) {
+	input = "";
+
+	var params = {screen_name: 'SophyDaphne'};
+
+	client.get('statuses/user_timeline', params, function(error, tweets, response) {
 	  
-// 		if (!error) {
+		if (!error) {
 	    	
-// 	    	for (var i = 0; i < tweets.length; i++) {
+	    	for (var i = 0; i < tweets.length; i++) {
 
-// 	    		console.log(tweets[i].text);
-// 	    		console.log(tweets[i].created_at);
-// 	    		console.log("");
+	    		console.log(tweets[i].text);
+	    		console.log(tweets[i].created_at);
+	    		console.log("");
 
-// 	    	}
-// 	  	}
-// 	});
-
-// };
-
-//function for obatining song from spotify
-function song() {
-
-	var Spotify = require("node-spotify-api");
- 
-	var spotify = new Spotify({
-		
+	    	}
+	  	}
 	});
 
-	//allows multiple words in the input
+};
+
+//======================SPOTIFY====================================
+
+//allows multiple words in the input
 	input = "";
 
 	if (nodeArgs.length <= 3) {
 
 		input = "ace of base";
 	}
+
 
 	else {
 
@@ -93,7 +102,19 @@ function song() {
 		};
 
 	}
+// function for obatining song from spotify
+function song(input) {
 
+	var Spotify = require("node-spotify-api");
+ 
+	var spotify = new Spotify(
+		keys.spotify
+		
+	);
+
+	
+
+	
 	 
 
 	//utilizing the spotify package, limits search to 3 results
@@ -109,18 +130,16 @@ function song() {
 		//creating a for loop to loop through the array:
 		for (var i = 0; i < data.tracks.items.length; i++) {
 
-			// console.log(data.tracks.items[i]);
-			console.log("Song name: " + data.tracks.items[i].name);
-			console.log("Preview link: " + data.tracks.items[i].external_urls.spotify);
-			console.log("Album: " + data.tracks.items[i].album.name);
 			// console.log("Artist(s): " + data.tracks.items[i].artists[0].name);//This displayed only one artist
-
+			// console.log(data.tracks.items[i]);
 			for (var j = 0; j < data.tracks.items[i].artists.length; j++ ) {
 
 				console.log("Artist(s): " + data.tracks.items[i].artists[j].name);
 
 			}
-
+			console.log("Song name: " + data.tracks.items[i].name);
+			console.log("Preview link: " + data.tracks.items[i].external_urls.spotify);
+			console.log("Album: " + data.tracks.items[i].album.name);			
 			console.log("");
 
 		}
@@ -130,11 +149,9 @@ function song() {
 };
 
 
+//==========================OMDB==================================
 
-//function for obtaining movie from OMDB
-function movie() {
-	
-	//using the request npm package
+//using the request npm package
 	var request = require("request");
 
 	//assigning the input varibale to be empty
@@ -143,7 +160,7 @@ function movie() {
 	//setting the default movie-this value
 	if (nodeArgs.length <= 3) {
 
-		input = "mr+nobody";
+		input = "mr nobody";
 	}
 
 	else {
@@ -164,6 +181,10 @@ function movie() {
 		};
 	};
 	
+//function for obtaining movie from OMDB
+function movie(input) {
+	
+	
 
 	//utilizing request to access API and display output
 	request("http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
@@ -183,5 +204,75 @@ function movie() {
 		 
 	});
 };
+
+//=======================DO WHAT IT SAYS=======================
+
+function random() {
+
+	var fs = require("fs");
+
+	fs.readFile("random.txt", "utf8",  (err, data, input) => {
+  		
+  		if (err){
+
+  			throw err;
+  		} 
+
+  		else {
+
+	  		// console.log(data);
+			//splits the string at the comma to two different strings, in an array
+	 		var res = data.split(",");
+	 		// console.log(res);
+
+	 		//accessing the strings in the array and assigning the values to variables action and input
+	 		action = res[0];
+	 		console.log(action);
+	 		 
+	 		input = res[1];
+	 		console.log(input);
+
+	 		 //Switch-case statement for different commands, depending on what's in the random.txt file
+			switch (action) {
+				case "my-tweets":
+					tweets();
+					break;
+
+				case "spotify-this-song":
+					song(input);
+					break;
+
+				case "movie-this":
+					movie(input);
+					break;
+			};
+
+  		};
+
+	});
+
+};
+
+//===================================================DATA LOGGING====================================================
+
+var fs = require("fs");
+
+//creating a log function
+function log() {
+
+	fs.appendFile('log.txt', 'Command requested: ' + action + ' ' + input + ". \n" , (err) => {
+
+		if (err) throw err;
+		
+		console.log('The "data to append" was appended to file!');
+	});
+}
+
+log();
+
+
+
+
+
 
 
